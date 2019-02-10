@@ -1,0 +1,56 @@
+{
+    "name": "smarc-server-typescript",
+    "version": "2.0.0",
+    "description": "implementation of smarc server with typescript and MQTT Protocol",
+    "main": "",
+    "scripts": {
+        "dev": "nodemon",
+        "ts-node": "ts-node",
+        "build": "tsc",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "engines": {
+        "node": ">=11.0.0"
+    },
+    "author": "Ibrahim Sakr <ebrahimes@gmail.com>",
+    "keywords": [],
+    "license": "GPL",
+    "dependencies": {
+        "chalk": "^2.4.1",
+        "dotenv": "^6.2.0",
+        "he-loader": "^1.0.1",
+        "he-validation": "^2.1.0",
+        "koa": "^2.7.0",
+        "koa-router": "^7.4.0",
+        "mongoose": "^5.3.15",
+        "mosca": "^2.8.3"
+    },
+    "devDependencies": {
+        "@types/chalk": "^2.2.0",
+        "@types/dotenv": "^4.0.3",
+        "@types/koa": "^2.0.48",
+        "@types/koa-router": "^7.0.39",
+        "@types/mongodb": "^3.1.15",
+        "@types/mongoose": "^5.3.4",
+        "@types/mosca": "^2.8.1",
+        "nodemon": "^1.18.7",
+        "ts-node": "^7.0.1",
+        "tslint": "^5.11.0",
+        "typescript": "^3.2.2"
+    },
+    "nodemonConfig": {
+        "exec": "ts-node bootstrap/app.ts",
+        "delay": "500",
+        "ext": "ts,json,js",
+        "watch": [
+            "config",
+            "bootstrap",
+            "app"
+        ],
+        "events": {
+            "restart": "osascript -e 'display notification \"HCN has been restarted few milliseconds ago.\" with title \"HCN Restart\"'",
+            "crash": "osascript -e 'display notification \"HCN crashed on the console.\" with title \"HCN Crashed\"'",
+            "exit": "osascript -e 'display notification \"HCN cleanly exited.\" with title \"HCN Clean\"'"
+        }
+    }
+}
