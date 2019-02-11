@@ -2,6 +2,7 @@ import { Settings, ComponentInterface } from 'he-loader';
 import { Server as MoscaServer } from 'mosca';
 import MQTTConfig from '../../config/mqtt.config';
 import MQTTisteners from '../listeners/mqtt.listeners';
+import httpConfig from '../../config/http.config';
 
 export default class MQTTComponent implements ComponentInterface {
 
@@ -15,15 +16,15 @@ export default class MQTTComponent implements ComponentInterface {
 
         const broker = new MoscaServer(MQTTConfig);
 
-        const KoaServer = settings.get('KoaServer');
+        const httpServer = settings.get(httpConfig.name);
 
         broker.on('clientConnected', MQTTisteners.clientConnectedListener);
         broker.on('published', MQTTisteners.publishedListener);
         broker.on('ready', MQTTisteners.readyListener(broker));
 
-        broker.attachHttpServer(KoaServer);
+        broker.attachHttpServer(httpServer);
 
-        KoaServer.listen(3000);
+        httpServer.listen(httpConfig.port);
     }
 
 }
