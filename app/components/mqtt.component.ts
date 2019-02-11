@@ -1,7 +1,7 @@
 import { Settings, ComponentInterface } from 'he-loader';
 import { Server as MoscaServer } from 'mosca';
 import MQTTConfig from '../../config/mqtt.config';
-import MQTTisteners from '../listeners/mqtt.listeners';
+import MQTTisteners from '../utils/mqtt.listeners';
 import httpConfig from '../../config/http.config';
 
 export default class MQTTComponent implements ComponentInterface {

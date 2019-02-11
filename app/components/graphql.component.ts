@@ -1,7 +1,21 @@
 import { Settings, ComponentInterface } from 'he-loader';
 import { createServer, IncomingMessage, ServerResponse } from 'http';
 import httpConfig from '../../config/http.config';
-import { graphql } from 'graphql';
+import { graphql, GraphQLSchema, GraphQLObjectType, GraphQLString } from 'graphql';
+
+var graphQLSchema = new GraphQLSchema({
+    query: new GraphQLObjectType({
+        name: 'RootQueryType',
+        fields: {
+            hello: {
+                type: GraphQLString,
+                resolve() {
+                    return 'world';
+                }
+            }
+        }
+    })
+});
 
 export default class GraphQLComponent implements ComponentInterface {
 
@@ -14,6 +28,7 @@ export default class GraphQLComponent implements ComponentInterface {
     async load(settings: Settings) {
 
         const httpServer = createServer((request: IncomingMessage, response: ServerResponse) => {
+            response.setHeader('Content-Type', 'application/json');
             if (request.url == '/query' && request.method === 'POST') {
                 let body = '';
                 request.on('data', chunk => {
@@ -21,13 +36,26 @@ export default class GraphQLComponent implements ComponentInterface {
                 });
 
                 request.on('end', () => {
-                    graphql(schema, body).then(result => {
-                        console.log(result);
-                        response.end('ok');
-                    });
+                    try {
+                        const parsedBody = JSON.parse(body);
+                        graphql({
+                            schema: graphQLSchema,
+                            source: parsedBody.query,
+                            rootValue: null,
+                            contextValue: null,
+                            variableValues: parsedBody.variables,
+                            operationName: null,
+                            fieldResolver: null
+                        }).then(result => {
+                            response.end(JSON.stringify(result));
+                        });
+                    } catch (e) {
+                        response.end("{ error: 'request did not contains correct data' }");
+                    }
+
                 });
             } else {
-                response.end('not found');
+                response.end("{ error: 'not found' }");
             }
         });
 
