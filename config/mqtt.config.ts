@@ -1,14 +1,10 @@
-const mosca = require('mosca');
+import { persistence } from 'mosca';
+import db from '../config/db.config';
 
 export default {
-    // port: 9090,
     persistence: {
-        factory: mosca.persistence.Mongo,
-        url: 'mongodb://localhost:27017/mqtt'
-    },
-    logger: {
-        name: "secureExample",
-        level: 40,
+        factory: persistence.Mongo,
+        url: `mongodb://${db.mqtt.host}:${db.mqtt.port}/${db.mqtt.name}`
     },
     secure: {
         port: 9091,

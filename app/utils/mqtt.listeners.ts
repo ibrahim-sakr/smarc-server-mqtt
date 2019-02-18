@@ -1,5 +1,5 @@
 import { Server, Client, Packet } from 'mosca';
-import { Authenticate, AuthorizePublish, AuthorizeSubscribe } from '../utils/Auth';
+import { Authenticate, AuthorizePublish, AuthorizeSubscribe } from './auth';
 
 export default class {
 

@@ -16,15 +16,15 @@ export default class MQTTComponent implements ComponentInterface {
 
         const broker = new MoscaServer(MQTTConfig);
 
-        // const httpServer = settings.get(httpConfig.name);
+        const httpServer = settings.get(httpConfig.name);
 
         broker.on('clientConnected', MQTTisteners.clientConnectedListener);
         broker.on('published', MQTTisteners.publishedListener);
         broker.on('ready', MQTTisteners.readyListener(broker));
 
-        // broker.attachHttpServer(httpServer);
+        broker.attachHttpServer(httpServer);
 
-        // httpServer.listen(httpConfig.port);
+        httpServer.listen(httpConfig.port);
     }
 
 }

@@ -1,4 +1,4 @@
 export default {
-    name: 'httpServer',
-    port: 3000
+    name: process.env.HTTP_SERVER_NAME || 'httpServer',
+    port: process.env.HTTP_SERVER_PORT || 3000
 }

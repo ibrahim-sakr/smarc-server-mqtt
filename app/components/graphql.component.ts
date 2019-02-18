@@ -1,21 +1,8 @@
 import { Settings, ComponentInterface } from 'he-loader';
 import { createServer, IncomingMessage, ServerResponse } from 'http';
 import httpConfig from '../../config/http.config';
-import { graphql, GraphQLSchema, GraphQLObjectType, GraphQLString } from 'graphql';
-
-var graphQLSchema = new GraphQLSchema({
-    query: new GraphQLObjectType({
-        name: 'RootQueryType',
-        fields: {
-            hello: {
-                type: GraphQLString,
-                resolve() {
-                    return 'world';
-                }
-            }
-        }
-    })
-});
+import { graphql } from 'graphql';
+import { Root as rootSchema } from '../schema/root.schema';
 
 export default class GraphQLComponent implements ComponentInterface {
 
@@ -39,13 +26,13 @@ export default class GraphQLComponent implements ComponentInterface {
                     try {
                         const parsedBody = JSON.parse(body);
                         graphql({
-                            schema: graphQLSchema,
+                            schema: rootSchema,
                             source: parsedBody.query,
-                            rootValue: null,
+                            rootValue: request,
                             contextValue: null,
-                            variableValues: parsedBody.variables,
-                            operationName: null,
-                            fieldResolver: null
+                            variableValues: parsedBody.variables || null,
+                            operationName: parsedBody.operationName || null,
+                            fieldResolver: null // default resolver
                         }).then(result => {
                             response.end(JSON.stringify(result));
                         });
