@@ -1,5 +1,6 @@
 import { Settings, ComponentInterface } from 'he-loader';
 import { connect } from 'mongoose';
+import db from '../../config/db.config';
 
 export default class MongoComponent implements ComponentInterface {
 
@@ -11,10 +12,9 @@ export default class MongoComponent implements ComponentInterface {
      */
     async load(settings: Settings) {
         try {
-            const uri = `mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}`;
+            const uri = `mongodb://${db.api.host}:${db.api.port}/${db.api.name}`;
 
             await connect(uri, {
-                dbName: process.env.DB_NAME,
                 useFindAndModify: true,
                 useNewUrlParser: true
             });

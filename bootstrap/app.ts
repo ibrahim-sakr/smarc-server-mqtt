@@ -1,7 +1,7 @@
 import { config } from 'dotenv';
 import { Loader, Settings } from 'he-loader';
 import MongoComponent from '../app/components/mongo.component';
-import KoaComponent from '../app/components/koa.component';
+import GraphQLComponent from '../app/components/graphql.component';
 import MQTTComponent from '../app/components/mqtt.component';
 
 /**
@@ -15,14 +15,14 @@ config();
 const loader = new Loader({});
 
 /**
- * load the components in sequence
+ * Create App and load the components in sequence
  */
 const app = loader.load([
     // create new connection with MongoDB
     new MongoComponent(),
 
-    // create koa application with the public APIs
-    new KoaComponent(),
+    // start graphql
+    new GraphQLComponent(),
 
     // create new MQTT broker
     new MQTTComponent()

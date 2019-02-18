@@ -1,9 +1,14 @@
-const mosca = require('mosca');
+import { persistence } from 'mosca';
+import db from '../config/db.config';
 
 export default {
-    port: 9090,
     persistence: {
-        factory: mosca.persistence.Mongo,
-        url: 'mongodb://localhost:27017/mqtt'
+        factory: persistence.Mongo,
+        url: `mongodb://${db.mqtt.host}:${db.mqtt.port}/${db.mqtt.name}`
+    },
+    secure: {
+        port: 9091,
+        keyPath: __dirname + '/../ssl/smarc-root-ca.key',
+        certPath: __dirname + '/../ssl/smarc-root-cert.pem',
     }
 };
