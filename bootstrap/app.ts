@@ -1,13 +1,8 @@
-import { config } from 'dotenv';
+require('./environment');
 import { Loader, Settings } from 'he-loader';
 import MongoComponent from '../app/components/mongo.component';
 import GraphQLComponent from '../app/components/graphql.component';
 import MQTTComponent from '../app/components/mqtt.component';
-
-/**
- * Load Config fromo dotenv
- */
-config();
 
 /**
  * create new Loader to manage and load all various components of the application

@@ -41,11 +41,6 @@
             "config",
             "bootstrap",
             "app"
-        ],
-        "events": {
-            "restart": "osascript -e 'display notification \"HCN has been restarted few milliseconds ago.\" with title \"HCN Restart\"'",
-            "crash": "osascript -e 'display notification \"HCN crashed on the console.\" with title \"HCN Crashed\"'",
-            "exit": "osascript -e 'display notification \"HCN cleanly exited.\" with title \"HCN Clean\"'"
-        }
+        ]
     }
 }

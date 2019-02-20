@@ -3,6 +3,7 @@ import { connect } from 'mongoose';
 import db from '../../config/db.config';
 
 export default class MongoComponent implements ComponentInterface {
+    private counter = 0;
 
     constructor() { }
 
@@ -10,18 +11,31 @@ export default class MongoComponent implements ComponentInterface {
      * init Mongo Database
      * @param settings 
      */
-    async load(settings: Settings) {
-        try {
-            const uri = `mongodb://${db.api.host}:${db.api.port}/${db.api.name}`;
+    load(settings: Settings) {
+        return new Promise(async (resolve) => {
+            this.counter++;
+            try {
+                await this.connect();
+                console.log('MongoDB: database connected');
+                return resolve();
+            } catch (e) {
+                if (db.api.reconnect.retry && this.counter <= Number(db.api.reconnect.maxRetries)) {
+                    console.error(`MongoDB: retry to connect ${this.counter}`);
+                    setTimeout(this.load.bind(this, settings), Number(db.api.reconnect.interval));
+                } else {
+                    throw new Error('MongoDB: Cannot connect to the Database');
+                }
+            }
+        });
+    }
 
-            await connect(uri, {
-                useFindAndModify: true,
-                useNewUrlParser: true
-            });
-            console.log('MongoDB: database connected');
-        } catch (e) {
-            throw Error('Failed to connect with DB');
-        }
+    private async connect() {
+        const uri = `mongodb://${db.api.host}:${db.api.port}/${db.api.name}`;
+
+        return await connect(uri, {
+            useFindAndModify: true,
+            useNewUrlParser: true
+        });
     }
 
 }
